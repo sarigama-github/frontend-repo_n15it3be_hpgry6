@@ -118,6 +118,7 @@ function Section({ category, places, onAdd }) {
 
 export default function App() {
   const baseUrl = useMemo(() => import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000', [])
+  const heroImage = useMemo(() => import.meta.env.VITE_HERO_IMAGE_URL || '', [])
   const [event, setEvent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -193,15 +194,25 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-rose-50 via-pink-50 to-amber-50">
-        <div className="max-w-6xl mx-auto px-6 py-16 sm:py-24 text-center">
-          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-gray-800 mb-4">
+      <section
+        className={`relative overflow-hidden ${heroImage ? 'text-white' : ''}`}
+        style={heroImage ? {
+          backgroundImage: `url(${heroImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        } : {}}
+      >
+        {heroImage && (
+          <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
+        )}
+        <div className="relative max-w-6xl mx-auto px-6 py-16 sm:py-24 text-center bg-gradient-to-br from-rose-50/70 via-pink-50/70 to-amber-50/70">
+          <h1 className={`text-4xl sm:text-6xl font-bold tracking-tight ${heroImage ? 'text-white drop-shadow' : 'text-gray-800' } mb-4`}>
             {event?.couple_names || 'Il nostro matrimonio'}
           </h1>
-          <p className="text-lg sm:text-2xl text-gray-700">
+          <p className={`text-lg sm:text-2xl ${heroImage ? 'text-white/90 drop-shadow' : 'text-gray-700' }`}>
             10 maggio 2026 • Montoro (AV)
           </p>
-          {event?.notes && <p className="mt-6 text-gray-700 max-w-2xl mx-auto">{event.notes}</p>}
+          {event?.notes && <p className={`mt-6 max-w-2xl mx-auto ${heroImage ? 'text-white/90 drop-shadow' : 'text-gray-700' }`}>{event.notes}</p>}
         </div>
       </section>
 
